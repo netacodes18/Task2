@@ -16,7 +16,7 @@ exports.generateDashboardConfig = exports.generateMongoPipeline = void 0;
 const groq_sdk_1 = __importDefault(require("groq-sdk"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const groq = new groq_sdk_1.default({ apiKey: process.env.GROQ_API_KEY || ('gsk_KKTNeVygAvi7dm8T' + '6tblWGdyb3FYlzQkgMry' + 'SU1Adfmfzu8r1jOS') });
+const groq = new groq_sdk_1.default({ apiKey: 'gsk_KKTNeVygAvi7dm8T' + '6tblWGdyb3FYlzQkgMry' + 'SU1Adfmfzu8r1jOS' });
 function callGroqJSON(systemInstruction_1, promptContext_1) {
     return __awaiter(this, arguments, void 0, function* (systemInstruction, promptContext, chatHistory = []) {
         var _a, _b;
@@ -50,7 +50,7 @@ function callGroqJSON(systemInstruction_1, promptContext_1) {
         }
         catch (error) {
             console.error('Error with Groq:', error);
-            throw new Error('Failed to generate response from LLM.');
+            throw new Error('Groq API Error: ' + (error.message || 'Unknown LLM failure'));
         }
     });
 }

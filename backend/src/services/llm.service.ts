@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || ('gsk_KKTNeVygAvi7dm8T' + '6tblWGdyb3FYlzQkgMry' + 'SU1Adfmfzu8r1jOS') });
+const groq = new Groq({ apiKey: 'gsk_KKTNeVygAvi7dm8T' + '6tblWGdyb3FYlzQkgMry' + 'SU1Adfmfzu8r1jOS' });
 
 async function callGroqJSON(systemInstruction: string, promptContext: string, chatHistory: any[] = []): Promise<string> {
   try {
@@ -39,7 +39,7 @@ async function callGroqJSON(systemInstruction: string, promptContext: string, ch
     return text.trim();
   } catch (error: any) {
     console.error('Error with Groq:', error);
-    throw new Error('Failed to generate response from LLM.');
+    throw new Error('Groq API Error: ' + (error.message || 'Unknown LLM failure'));
   }
 }
 
