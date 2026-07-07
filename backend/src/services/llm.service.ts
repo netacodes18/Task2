@@ -1,38 +1,33 @@
-import { GoogleGenAI } from '@google/genai';
+import Groq from 'groq-sdk';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || '' });
 
-
-const modelsToTry = [
-  'gemini-1.5-flash',
-  'gemini-2.0-flash'
-];
-
-async function callGeminiJSON(systemInstruction: string, promptContext: string): Promise<string> {
-  let lastError;
-  for (const modelName of modelsToTry) {
-    try {
-      const response = await ai.models.generateContent({
-          model: modelName,
-          contents: promptContext,
-          config: { systemInstruction }
-      });
-      const text = response.text || '';
-      const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-      if (jsonMatch && jsonMatch[1]) {
-        return jsonMatch[1].trim();
-      }
-      return text.trim();
-    } catch (error: any) {
-      console.warn(`Model ${modelName} failed:`, error.message);
-      lastError = error;
+async function callGroqJSON(systemInstruction: string, promptContext: string): Promise<string> {
+  try {
+    const chatCompletion = await groq.chat.completions.create({
+      messages: [
+        { role: 'system', content: systemInstruction },
+        { role: 'user', content: promptContext }
+      ],
+      model: 'llama-3.3-70b-versatile',
+      temperature: 0.1,
+      response_format: { type: 'json_object' }
+    });
+    const text = chatCompletion.choices[0]?.message?.content || '';
+    
+    // Sometimes models wrap json_object responses in markdown blocks anyway
+    const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+    if (jsonMatch && jsonMatch[1]) {
+      return jsonMatch[1].trim();
     }
+    return text.trim();
+  } catch (error: any) {
+    console.error('Error with Groq:', error);
+    throw new Error('Failed to generate response from LLM.');
   }
-  console.error('Error with Gemini after trying all models:', lastError);
-  throw new Error('Failed to generate response from LLM.');
 }
 
 export const generateMongoPipeline = async (
@@ -62,7 +57,7 @@ Sample Data: ${JSON.stringify(sampleRows, null, 2)}
 User Question: ${question}
 Response JSON Object:`;
 
-  return callGeminiJSON(systemInstruction, promptContext);
+  return callGroqJSON(systemInstruction, promptContext);
 };
 
 export const generateDashboardConfig = async (
@@ -100,5 +95,5 @@ Sample Data: ${JSON.stringify(sampleRows, null, 2)}
 
 Generate the dashboard JSON Object:`;
 
-  return callGeminiJSON(systemInstruction, promptContext);
+  return callGroqJSON(systemInstruction, promptContext);
 };
