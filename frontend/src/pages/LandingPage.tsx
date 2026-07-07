@@ -204,7 +204,7 @@ export default function LandingPage() {
             </div>
             <span className="text-white font-bold">DataChat</span>
           </div>
-          <p className="text-sm">&copy; {new Date().getFullYear()} DataChat. Built with AI.</p>
+          <p className="text-sm">&copy; {new Date().getFullYear()} DataChat.</p>
         </div>
       </footer>
     </div>
