@@ -14,7 +14,10 @@ const db_service_1 = require("./services/db.service");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT || 3000;
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: '*',
+    allowedHeaders: ['Content-Type', 'Authorization', 'x-session-id']
+}));
 app.use(express_1.default.json());
 // Initialize DB on startup
 (0, db_service_1.initDb)();

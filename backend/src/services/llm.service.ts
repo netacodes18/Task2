@@ -5,13 +5,26 @@ dotenv.config();
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || ('gsk_KKTNeVygAvi7dm8T' + '6tblWGdyb3FYlzQkgMry' + 'SU1Adfmfzu8r1jOS') });
 
-async function callGroqJSON(systemInstruction: string, promptContext: string): Promise<string> {
+async function callGroqJSON(systemInstruction: string, promptContext: string, chatHistory: any[] = []): Promise<string> {
   try {
+    const messages: any[] = [
+      { role: 'system', content: systemInstruction }
+    ];
+
+    // Append chat history (keep only the last 6 messages to avoid token bloat)
+    const recentHistory = chatHistory.slice(-6);
+    for (const msg of recentHistory) {
+      messages.push({
+        role: msg.role === 'assistant' ? 'assistant' : 'user',
+        content: msg.content
+      });
+    }
+
+    // Append current prompt
+    messages.push({ role: 'user', content: promptContext });
+
     const chatCompletion = await groq.chat.completions.create({
-      messages: [
-        { role: 'system', content: systemInstruction },
-        { role: 'user', content: promptContext }
-      ],
+      messages,
       model: 'llama-3.3-70b-versatile',
       temperature: 0.1,
       response_format: { type: 'json_object' }
@@ -34,7 +47,8 @@ export const generateMongoPipeline = async (
   question: string,
   collectionName: string,
   schema: any[],
-  sampleRows: any[] = []
+  sampleRows: any[] = [],
+  chatHistory: any[] = []
 ): Promise<string> => {
   const schemaDescription = schema.map((col) => `${col.name} (${col.type})`).join(', ');
 
@@ -57,7 +71,7 @@ Sample Data: ${JSON.stringify(sampleRows, null, 2)}
 User Question: ${question}
 Response JSON Object:`;
 
-  return callGroqJSON(systemInstruction, promptContext);
+  return callGroqJSON(systemInstruction, promptContext, chatHistory);
 };
 
 export const generateDashboardConfig = async (

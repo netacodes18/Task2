@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/', async (req, res) => {
   try {
-    const { datasetId, question } = req.body;
+    const { datasetId, question, chatHistory = [] } = req.body;
 
     if (!datasetId || !question) {
       return res.status(400).json({ error: 'Missing datasetId or question.' });
@@ -30,8 +30,8 @@ router.post('/', async (req, res) => {
     // 2. Fetch sample data to help LLM
     const sampleRows = await db.collection(collectionName).find().limit(1).toArray();
 
-    // 3. Generate Response using Gemini
-    let generatedResponseStr = await generateMongoPipeline(question, collectionName, schema, sampleRows);
+    // 3. Generate Response using LLM
+    let generatedResponseStr = await generateMongoPipeline(question, collectionName, schema, sampleRows, chatHistory);
     
     // 4. Validate JSON Response
     let aiResponse;

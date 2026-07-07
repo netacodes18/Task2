@@ -19,7 +19,7 @@ const mongodb_1 = require("mongodb");
 const router = express_1.default.Router();
 router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { datasetId, question } = req.body;
+        const { datasetId, question, chatHistory = [] } = req.body;
         if (!datasetId || !question) {
             return res.status(400).json({ error: 'Missing datasetId or question.' });
         }
@@ -36,8 +36,8 @@ router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const { table_name: collectionName, column_schema: schema } = dataset;
         // 2. Fetch sample data to help LLM
         const sampleRows = yield db.collection(collectionName).find().limit(1).toArray();
-        // 3. Generate Response using Gemini
-        let generatedResponseStr = yield (0, llm_service_1.generateMongoPipeline)(question, collectionName, schema, sampleRows);
+        // 3. Generate Response using LLM
+        let generatedResponseStr = yield (0, llm_service_1.generateMongoPipeline)(question, collectionName, schema, sampleRows, chatHistory);
         // 4. Validate JSON Response
         let aiResponse;
         try {

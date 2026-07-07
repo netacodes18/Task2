@@ -17,15 +17,25 @@ const groq_sdk_1 = __importDefault(require("groq-sdk"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 const groq = new groq_sdk_1.default({ apiKey: process.env.GROQ_API_KEY || ('gsk_KKTNeVygAvi7dm8T' + '6tblWGdyb3FYlzQkgMry' + 'SU1Adfmfzu8r1jOS') });
-function callGroqJSON(systemInstruction, promptContext) {
-    return __awaiter(this, void 0, void 0, function* () {
+function callGroqJSON(systemInstruction_1, promptContext_1) {
+    return __awaiter(this, arguments, void 0, function* (systemInstruction, promptContext, chatHistory = []) {
         var _a, _b;
         try {
+            const messages = [
+                { role: 'system', content: systemInstruction }
+            ];
+            // Append chat history (keep only the last 6 messages to avoid token bloat)
+            const recentHistory = chatHistory.slice(-6);
+            for (const msg of recentHistory) {
+                messages.push({
+                    role: msg.role === 'assistant' ? 'assistant' : 'user',
+                    content: msg.content
+                });
+            }
+            // Append current prompt
+            messages.push({ role: 'user', content: promptContext });
             const chatCompletion = yield groq.chat.completions.create({
-                messages: [
-                    { role: 'system', content: systemInstruction },
-                    { role: 'user', content: promptContext }
-                ],
+                messages,
                 model: 'llama-3.3-70b-versatile',
                 temperature: 0.1,
                 response_format: { type: 'json_object' }
@@ -44,7 +54,7 @@ function callGroqJSON(systemInstruction, promptContext) {
         }
     });
 }
-const generateMongoPipeline = (question_1, collectionName_1, schema_1, ...args_1) => __awaiter(void 0, [question_1, collectionName_1, schema_1, ...args_1], void 0, function* (question, collectionName, schema, sampleRows = []) {
+const generateMongoPipeline = (question_1, collectionName_1, schema_1, ...args_1) => __awaiter(void 0, [question_1, collectionName_1, schema_1, ...args_1], void 0, function* (question, collectionName, schema, sampleRows = [], chatHistory = []) {
     const schemaDescription = schema.map((col) => `${col.name} (${col.type})`).join(', ');
     const systemInstruction = `You are an expert MongoDB data analyst. Your job is to answer natural language questions about a dataset.
 You must return a single valid JSON object containing exactly two keys: "explanation" and "pipeline".
@@ -63,7 +73,7 @@ Sample Data: ${JSON.stringify(sampleRows, null, 2)}
 
 User Question: ${question}
 Response JSON Object:`;
-    return callGroqJSON(systemInstruction, promptContext);
+    return callGroqJSON(systemInstruction, promptContext, chatHistory);
 });
 exports.generateMongoPipeline = generateMongoPipeline;
 const generateDashboardConfig = (collectionName_1, schema_1, ...args_1) => __awaiter(void 0, [collectionName_1, schema_1, ...args_1], void 0, function* (collectionName, schema, sampleRows = []) {

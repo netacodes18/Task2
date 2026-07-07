@@ -78,7 +78,8 @@ export default function ChatPage() {
     try {
       const res = await axios.post(`${API_URL}/api/query`, {
         datasetId,
-        question: userMessage.content
+        question: userMessage.content,
+        chatHistory: messages.map(m => ({ role: m.role, content: m.content }))
       });
 
       const assistantMessage: Message = {
@@ -218,6 +219,11 @@ export default function ChatPage() {
               {msg.data && msg.fields && msg.data.length > 0 && (
                 <div className="mt-4 border border-gray-200 rounded overflow-hidden">
                   <ResultView data={msg.data} fields={msg.fields} />
+                </div>
+              )}
+              {msg.sql && msg.data && msg.data.length === 0 && (
+                <div className="mt-4 p-3 bg-gray-50 border border-gray-200 rounded text-gray-500 text-sm">
+                  The query executed successfully but returned 0 results.
                 </div>
               )}
             </div>
