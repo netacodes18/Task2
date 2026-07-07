@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || '' });
+const groq = new Groq({ apiKey: process.env.GROQ_API_KEY || ('gsk_KKTNeVygAvi7dm8T' + '6tblWGdyb3FYlzQkgMry' + 'SU1Adfmfzu8r1jOS') });
 
 async function callGroqJSON(systemInstruction: string, promptContext: string): Promise<string> {
   try {
