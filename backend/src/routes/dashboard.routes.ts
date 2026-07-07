@@ -8,7 +8,6 @@ const router = express.Router();
 router.get('/:datasetId', async (req, res) => {
   try {
     const { datasetId } = req.params;
-    const sessionId = req.headers['x-session-id'] || 'anonymous';
     const db = getDb();
 
     // 1. Fetch dataset metadata (Allow access without session ID for sharing links)

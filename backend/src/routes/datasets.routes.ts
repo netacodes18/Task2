@@ -8,9 +8,8 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const db = getDb();
-    const sessionId = req.headers['x-session-id'] || 'anonymous';
     const datasets = await db.collection('_datasets')
-      .find({ session_id: sessionId }, { projection: { column_schema: 0 } }) // Omit schema for list view
+      .find({}, { projection: { column_schema: 0 } }) // Omit schema for list view
       .sort({ created_at: -1 })
       .toArray();
     

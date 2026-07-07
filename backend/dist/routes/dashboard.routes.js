@@ -20,7 +20,6 @@ const router = express_1.default.Router();
 router.get('/:datasetId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { datasetId } = req.params;
-        const sessionId = req.headers['x-session-id'] || 'anonymous';
         const db = (0, db_service_1.getDb)();
         // 1. Fetch dataset metadata (Allow access without session ID for sharing links)
         const dataset = yield db.collection('_datasets').findOne({

@@ -64,14 +64,12 @@ router.post('/confirm', async (req, res) => {
     }
 
     // Register dataset metadata in _datasets collection
-    const sessionId = req.headers['x-session-id'] || 'anonymous';
     const metadata = {
       name: datasetName,
       original_filename: originalName,
       table_name: collectionName,
       row_count: data.length,
       column_schema: schema,
-      session_id: sessionId,
       created_at: new Date()
     };
     

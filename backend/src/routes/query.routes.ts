@@ -14,7 +14,6 @@ router.post('/', async (req, res) => {
     }
 
     const db = getDb();
-    const sessionId = req.headers['x-session-id'] || 'anonymous';
 
     // 1. Fetch dataset metadata and verify ownership
     const dataset = await db.collection('_datasets').findOne({ 

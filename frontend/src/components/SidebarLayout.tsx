@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Upload, MessageSquare, LayoutDashboard, BarChart2, UserCircle } from 'lucide-react';
-import SessionModal from './SessionModal';
+import { Upload, MessageSquare, LayoutDashboard, BarChart2 } from 'lucide-react';
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
-  const [sessionModalOpen, setSessionModalOpen] = useState(false);
 
   return (
     <div className="flex h-screen bg-[#f4f2eb] font-sans">
@@ -26,17 +24,6 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
           <NavItem to="/app/dashboard" icon={<LayoutDashboard size={20} />} label="Dashboard" active={location.pathname.includes('/dashboard')} />
           <NavItem to="/app/chat" icon={<MessageSquare size={20} />} label="AI Chat" active={location.pathname.includes('/chat')} />
         </nav>
-
-        {/* User Session Profile Button at bottom */}
-        <div className="w-full p-4 border-t border-emerald-800">
-          <button 
-            onClick={() => setSessionModalOpen(true)}
-            className="w-full flex items-center justify-center lg:justify-start gap-2 py-3 px-3 rounded-lg transition-colors bg-emerald-900/40 hover:bg-emerald-800 text-emerald-100 hover:text-white"
-          >
-            <UserCircle size={24} />
-            <span className="font-medium hidden lg:block">My Profile</span>
-          </button>
-        </div>
       </div>
 
       {/* Main Content Area */}
@@ -45,8 +32,6 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
           {children}
         </div>
       </div>
-
-      <SessionModal open={sessionModalOpen} onClose={() => setSessionModalOpen(false)} />
     </div>
   );
 }

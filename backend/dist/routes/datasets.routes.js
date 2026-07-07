@@ -20,9 +20,8 @@ const router = express_1.default.Router();
 router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const db = (0, db_service_1.getDb)();
-        const sessionId = req.headers['x-session-id'] || 'anonymous';
         const datasets = yield db.collection('_datasets')
-            .find({ session_id: sessionId }, { projection: { column_schema: 0 } }) // Omit schema for list view
+            .find({}, { projection: { column_schema: 0 } }) // Omit schema for list view
             .sort({ created_at: -1 })
             .toArray();
         // Map _id to id for frontend
