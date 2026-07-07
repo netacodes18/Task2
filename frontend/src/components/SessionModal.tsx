@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Dialog, DialogTitle, DialogContent, DialogActions, 
-  Button, Typography, TextField, IconButton, Tooltip, Alert
+  Button, Typography, TextField, IconButton, Tooltip
 } from '@mui/material';
 import { Copy, KeyRound, RefreshCcw } from 'lucide-react';
 import { getSessionId, setSessionId } from '../utils/session';
@@ -67,7 +67,7 @@ export default function SessionModal({ open, onClose }: SessionModalProps) {
               variant="outlined" 
               size="small" 
               fullWidth 
-              InputProps={{ readOnly: true, className: "font-mono text-sm bg-white" }}
+              inputProps={{ readOnly: true, className: "font-mono text-sm bg-white" }}
             />
             <Tooltip title={copied ? "Copied!" : "Copy Key"}>
               <IconButton onClick={handleCopy} color={copied ? "success" : "primary"} className="bg-white border border-gray-200 hover:bg-gray-100">

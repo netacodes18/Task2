@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
   Typography, TextField, Button,
-  CircularProgress, Tabs, Tab, Box, Accordion, AccordionSummary, AccordionDetails
+  CircularProgress, Tabs, Tab, Box, Accordion, AccordionSummary, AccordionDetails, Card, CardContent
 } from '@mui/material';
-import { Send, Table as TableIcon, BarChart2, Code, ChevronDown } from 'lucide-react';
+import { Send, Table as TableIcon, BarChart2, Code, ChevronDown, Database, MessageSquare } from 'lucide-react';
 import DataTable from '../components/DataTable';
 import ChartViewer from '../components/ChartViewer';
 
@@ -26,15 +26,28 @@ export default function ChatPage() {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [datasetMeta, setDatasetMeta] = useState<any>(null);
+  const [allDatasets, setAllDatasets] = useState<any[]>([]);
   const chatEndRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (datasetId) {
       fetchDatasetMeta(datasetId);
       // Clear previous chat when dataset changes
       setMessages([]);
+    } else {
+      fetchAllDatasets();
     }
   }, [datasetId]);
+
+  const fetchAllDatasets = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/api/datasets`);
+      setAllDatasets(res.data);
+    } catch (err) {
+      console.error('Failed to fetch datasets list');
+    }
+  };
 
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -91,7 +104,57 @@ export default function ChatPage() {
   };
 
   if (!datasetId) {
-    return <div className="p-8 text-center text-gray-500">Please select a dataset from the Upload page first.</div>;
+    return (
+      <div className="flex flex-col h-full bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+        <div className="text-center mb-8">
+          <div className="bg-emerald-100 p-4 rounded-full inline-block mb-4">
+            <MessageSquare size={32} className="text-primary" />
+          </div>
+          <Typography variant="h5" className="font-bold text-gray-800 mb-2">Select a Dataset to Chat</Typography>
+          <Typography variant="body1" className="text-gray-500">
+            Choose a dataset below to start asking questions and generating AI analysis.
+          </Typography>
+        </div>
+
+        {allDatasets.length === 0 ? (
+          <div className="text-center p-8 bg-gray-50 rounded-lg border border-dashed border-gray-300">
+            <Typography variant="body1" color="textSecondary">
+              You haven't uploaded any datasets yet. Go to the Datasets page to upload one!
+            </Typography>
+            <Button variant="outlined" color="primary" onClick={() => navigate('/app')} className="mt-4">
+              Go to Uploads
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto w-full">
+            {allDatasets.map(ds => (
+              <Card 
+                key={ds.id} 
+                className="cursor-pointer hover:shadow-md hover:border-primary transition-all border border-gray-200"
+                onClick={() => navigate(`/app/chat/${ds.id}`)}
+              >
+                <CardContent className="p-4 flex items-start gap-4">
+                  <div className="bg-gray-100 p-3 rounded-lg">
+                    <Database size={24} className="text-gray-600" />
+                  </div>
+                  <div>
+                    <Typography variant="subtitle1" className="font-semibold text-gray-800 line-clamp-1" title={ds.name}>
+                      {ds.name}
+                    </Typography>
+                    <Typography variant="caption" className="text-gray-500 block">
+                      {ds.row_count} rows
+                    </Typography>
+                    <Typography variant="caption" className="text-gray-400">
+                      {new Date(ds.created_at).toLocaleDateString()}
+                    </Typography>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
+    );
   }
 
   return (
