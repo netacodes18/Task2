@@ -195,18 +195,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ─── Footer ─── */}
-      <footer className="bg-gray-900 text-gray-400 py-10 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="bg-[#10b981] p-1.5 rounded-lg">
-              <BarChart2 size={16} className="text-white" />
-            </div>
-            <span className="text-white font-bold">DataChat</span>
-          </div>
-          <p className="text-sm">&copy; {new Date().getFullYear()} DataChat.</p>
-        </div>
-      </footer>
+
     </div>
   );
 }
