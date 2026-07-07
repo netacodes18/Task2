@@ -4,12 +4,10 @@ import axios from 'axios'
 import './index.css'
 import App from './App.tsx'
 
-// Generate or retrieve session ID
-let sessionId = localStorage.getItem('datachat_session_id');
-if (!sessionId) {
-  sessionId = crypto.randomUUID();
-  localStorage.setItem('datachat_session_id', sessionId);
-}
+import { getSessionId } from './utils/session';
+
+// Retrieve session ID
+const sessionId = getSessionId();
 
 // Add interceptor to append session ID to all requests
 axios.interceptors.request.use((config) => {

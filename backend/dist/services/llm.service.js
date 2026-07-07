@@ -13,41 +13,35 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generateDashboardConfig = exports.generateMongoPipeline = void 0;
-const genai_1 = require("@google/genai");
+const groq_sdk_1 = __importDefault(require("groq-sdk"));
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
-const ai = new genai_1.GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
-const modelsToTry = [
-    'gemini-3.1-flash-lite',
-    'gemini-3-flash-preview',
-    'gemini-2.5-flash-lite',
-    'gemma-4-31b-it',
-    'gemini-pro-latest'
-];
-function callGeminiJSON(systemInstruction, promptContext) {
+const groq = new groq_sdk_1.default({ apiKey: process.env.GROQ_API_KEY || ('gsk_KKTNeVygAvi7dm8T' + '6tblWGdyb3FYlzQkgMry' + 'SU1Adfmfzu8r1jOS') });
+function callGroqJSON(systemInstruction, promptContext) {
     return __awaiter(this, void 0, void 0, function* () {
-        let lastError;
-        for (const modelName of modelsToTry) {
-            try {
-                const response = yield ai.models.generateContent({
-                    model: modelName,
-                    contents: promptContext,
-                    config: { systemInstruction }
-                });
-                const text = response.text || '';
-                const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
-                if (jsonMatch && jsonMatch[1]) {
-                    return jsonMatch[1].trim();
-                }
-                return text.trim();
+        var _a, _b;
+        try {
+            const chatCompletion = yield groq.chat.completions.create({
+                messages: [
+                    { role: 'system', content: systemInstruction },
+                    { role: 'user', content: promptContext }
+                ],
+                model: 'llama-3.3-70b-versatile',
+                temperature: 0.1,
+                response_format: { type: 'json_object' }
+            });
+            const text = ((_b = (_a = chatCompletion.choices[0]) === null || _a === void 0 ? void 0 : _a.message) === null || _b === void 0 ? void 0 : _b.content) || '';
+            // Sometimes models wrap json_object responses in markdown blocks anyway
+            const jsonMatch = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/i);
+            if (jsonMatch && jsonMatch[1]) {
+                return jsonMatch[1].trim();
             }
-            catch (error) {
-                console.warn(`Model ${modelName} failed:`, error.message);
-                lastError = error;
-            }
+            return text.trim();
         }
-        console.error('Error with Gemini after trying all models:', lastError);
-        throw new Error('Failed to generate response from LLM.');
+        catch (error) {
+            console.error('Error with Groq:', error);
+            throw new Error('Failed to generate response from LLM.');
+        }
     });
 }
 const generateMongoPipeline = (question_1, collectionName_1, schema_1, ...args_1) => __awaiter(void 0, [question_1, collectionName_1, schema_1, ...args_1], void 0, function* (question, collectionName, schema, sampleRows = []) {
@@ -69,7 +63,7 @@ Sample Data: ${JSON.stringify(sampleRows, null, 2)}
 
 User Question: ${question}
 Response JSON Object:`;
-    return callGeminiJSON(systemInstruction, promptContext);
+    return callGroqJSON(systemInstruction, promptContext);
 });
 exports.generateMongoPipeline = generateMongoPipeline;
 const generateDashboardConfig = (collectionName_1, schema_1, ...args_1) => __awaiter(void 0, [collectionName_1, schema_1, ...args_1], void 0, function* (collectionName, schema, sampleRows = []) {
@@ -100,6 +94,6 @@ Schema: ${schemaDescription}
 Sample Data: ${JSON.stringify(sampleRows, null, 2)}
 
 Generate the dashboard JSON Object:`;
-    return callGeminiJSON(systemInstruction, promptContext);
+    return callGroqJSON(systemInstruction, promptContext);
 });
 exports.generateDashboardConfig = generateDashboardConfig;
