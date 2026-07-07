@@ -47,7 +47,7 @@ export default function LandingPage() {
           </h1>
 
           <p className="text-lg md:text-xl text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-            Upload any CSV or Excel file, and let our AI answer your questions in plain English, and uncover hidden patterns in your data.
+            Upload any CSV or Excel file, and let our AI automatically generate beautiful dashboards, answer your questions in plain English, and uncover hidden patterns in your data.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -116,9 +116,9 @@ export default function LandingPage() {
               <div className="bg-emerald-100 text-emerald-600 p-3 rounded-2xl inline-block mb-5 group-hover:bg-emerald-500 group-hover:text-white transition-colors duration-300">
                 <TrendingUp size={28} />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">AI-Powered Data Parsing</h3>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">AI-Generated Dashboards</h3>
               <p className="text-gray-500 leading-relaxed">
-                Our AI automatically analyzes your data schema so you don't have to write any configuration.
+                Our AI automatically analyzes your data schema and generates beautiful KPI cards, bar charts, pie charts, and line charts — no configuration needed.
               </p>
             </div>
 
@@ -159,7 +159,7 @@ export default function LandingPage() {
             {[
               { step: '01', icon: <Database size={24} />, title: 'Upload Your Data', desc: 'Drop in any CSV or Excel file. We handle the rest — schema detection, data cleaning, and secure storage.' },
               { step: '02', icon: <PieChart size={24} />, title: 'AI Analyzes Everything', desc: 'Our AI examines your dataset and automatically generates optimized queries for KPIs, charts, and trend analysis.' },
-              { step: '03', icon: <MessageSquare size={24} />, title: 'Ask & Explore', desc: 'Chat with your data in plain English. Dive deeper into any metric instantly.' },
+              { step: '03', icon: <MessageSquare size={24} />, title: 'Ask & Explore', desc: 'Chat with your data in plain English or browse the auto-generated dashboard. Dive deeper into any metric instantly.' },
             ].map((item, i) => (
               <div key={i} className="relative text-center">
                 <div className="text-6xl font-black text-emerald-100 mb-4 select-none">{item.step}</div>

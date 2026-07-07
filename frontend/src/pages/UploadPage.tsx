@@ -146,7 +146,7 @@ export default function UploadPage() {
                 datasets.map(ds => (
                   <React.Fragment key={ds.id}>
                     <ListItem disablePadding>
-                      <ListItemButton onClick={() => navigate(`/app/chat/${ds.id}`)} className="py-3 px-4 hover:bg-[#ebf5f0]">
+                      <ListItemButton onClick={() => navigate(`/app/dashboard/${ds.id}`)} className="py-3 px-4 hover:bg-[#ebf5f0]">
                         <ListItemText 
                           primary={<Typography variant="subtitle2" className="font-semibold text-gray-800">{ds.name}</Typography>} 
                           secondary={`${ds.row_count} rows • ${new Date(ds.created_at).toLocaleDateString()}`} 
@@ -247,7 +247,13 @@ export default function UploadPage() {
         >
           Talk to AI about Data
         </Button>
-
+        <Button 
+          variant="contained" 
+          onClick={() => navigate(`/app/dashboard/${successDatasetId}`)}
+          className="flex-1 py-3 bg-[#10b981] hover:bg-emerald-600 text-white"
+        >
+          Create Full Analysis
+        </Button>
       </DialogActions>
     </Dialog>
     </>

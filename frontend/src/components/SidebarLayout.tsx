@@ -23,6 +23,7 @@ export default function SidebarLayout({ children }: { children: React.ReactNode 
         {/* Navigation */}
         <nav className="flex-1 w-full space-y-4 px-3">
           <NavItem to="/app" icon={<Upload size={20} />} label="Datasets" active={location.pathname === '/app' || location.pathname === '/app/'} />
+          <NavItem to="/app/dashboard" icon={<LayoutDashboard size={20} />} label="Dashboard" active={location.pathname.includes('/dashboard')} />
           <NavItem to="/app/chat" icon={<MessageSquare size={20} />} label="AI Chat" active={location.pathname.includes('/chat')} />
         </nav>
 
