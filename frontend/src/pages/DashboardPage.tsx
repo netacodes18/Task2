@@ -51,7 +51,7 @@ export default function DashboardPage() {
     return (
       <div className="flex flex-col items-center justify-center h-[70vh]">
         <h2 className="text-2xl font-bold text-gray-700 mb-4">No Dataset Selected</h2>
-        <Link to="/" className="px-6 py-2 bg-[#10b981] text-white rounded-lg hover:bg-emerald-600 transition">
+        <Link to="/app" className="px-6 py-2 bg-[#10b981] text-white rounded-lg hover:bg-emerald-600 transition">
           Go to Datasets
         </Link>
       </div>
@@ -76,7 +76,7 @@ export default function DashboardPage() {
     return (
       <div className="p-6 max-w-3xl mx-auto">
         <Alert severity="error" className="mb-4">{error}</Alert>
-        <Link to={`/chat/${datasetId}`} className="text-[#10b981] hover:underline font-medium">
+        <Link to={`/app/chat/${datasetId}`} className="text-[#10b981] hover:underline font-medium">
           Fallback to AI Chat instead &rarr;
         </Link>
       </div>
@@ -91,7 +91,7 @@ export default function DashboardPage() {
       {/* Header Bar */}
       <div className="flex justify-between items-center bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
         <div className="flex items-center space-x-2 text-sm font-medium text-gray-500">
-          <Link to="/" className="hover:text-gray-800 transition">Datasets</Link>
+          <Link to="/app" className="hover:text-gray-800 transition">Datasets</Link>
           <ChevronRight size={16} />
           <span className="text-gray-900 font-bold">{datasetMeta?.name || 'Dataset'} Analysis</span>
         </div>
@@ -156,7 +156,7 @@ export default function DashboardPage() {
         <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col h-[400px]">
            <div className="flex justify-between items-center mb-1">
              <h3 className="text-gray-800 font-bold">Data Overview</h3>
-             <Link to={`/chat/${datasetId}`} className="text-xs text-[#10b981] hover:underline font-medium">Ask AI &rarr;</Link>
+             <Link to={`/app/chat/${datasetId}`} className="text-xs text-[#10b981] hover:underline font-medium">Ask AI &rarr;</Link>
            </div>
            <p className="text-xs text-gray-400 mb-4">Top 5 records from your dataset</p>
            

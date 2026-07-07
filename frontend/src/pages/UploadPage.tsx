@@ -146,7 +146,7 @@ export default function UploadPage() {
                 datasets.map(ds => (
                   <React.Fragment key={ds.id}>
                     <ListItem disablePadding>
-                      <ListItemButton onClick={() => navigate(`/dashboard/${ds.id}`)} className="py-3 px-4 hover:bg-[#ebf5f0]">
+                      <ListItemButton onClick={() => navigate(`/app/dashboard/${ds.id}`)} className="py-3 px-4 hover:bg-[#ebf5f0]">
                         <ListItemText 
                           primary={<Typography variant="subtitle2" className="font-semibold text-gray-800">{ds.name}</Typography>} 
                           secondary={`${ds.row_count} rows • ${new Date(ds.created_at).toLocaleDateString()}`} 
@@ -241,7 +241,7 @@ export default function UploadPage() {
       <DialogActions className="p-4 gap-2 flex-col sm:flex-row">
         <Button 
           variant="outlined" 
-          onClick={() => navigate(`/chat/${successDatasetId}`)}
+          onClick={() => navigate(`/app/chat/${successDatasetId}`)}
           className="flex-1 py-3"
           color="primary"
         >
@@ -249,7 +249,7 @@ export default function UploadPage() {
         </Button>
         <Button 
           variant="contained" 
-          onClick={() => navigate(`/dashboard/${successDatasetId}`)}
+          onClick={() => navigate(`/app/dashboard/${successDatasetId}`)}
           className="flex-1 py-3 bg-[#10b981] hover:bg-emerald-600 text-white"
         >
           Create Full Analysis

@@ -1,37 +1,29 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Upload, MessageSquare, LayoutDashboard, Settings, Bell, BarChart2 } from 'lucide-react';
+import { Upload, MessageSquare, LayoutDashboard, BarChart2 } from 'lucide-react';
 
 export default function SidebarLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
-
-  const isActive = (path: string) => location.pathname === path || (path !== '/' && location.pathname.startsWith(path));
 
   return (
     <div className="flex h-screen bg-[#f4f2eb] font-sans">
       {/* Sidebar */}
       <div className="w-20 lg:w-64 bg-[#2a5c48] text-white flex flex-col items-center lg:items-start py-6 shadow-2xl z-10 transition-all duration-300">
         
-        {/* Logo */}
-        <div className="w-full px-4 lg:px-6 flex items-center justify-center lg:justify-start mb-10">
+        {/* Logo — links back to landing page */}
+        <Link to="/" className="w-full px-4 lg:px-6 flex items-center justify-center lg:justify-start mb-10 hover:opacity-90 transition-opacity">
           <div className="bg-[#10b981] p-2 rounded-lg flex-shrink-0">
             <BarChart2 size={24} className="text-white" />
           </div>
           <span className="ml-3 font-bold text-xl hidden lg:block tracking-wide">DataChat</span>
-        </div>
+        </Link>
 
         {/* Navigation */}
         <nav className="flex-1 w-full space-y-4 px-3">
-          <NavItem to="/" icon={<Upload size={20} />} label="Datasets" active={isActive('/') && !location.pathname.includes('/chat') && !location.pathname.includes('/dashboard')} />
-          <NavItem to="/dashboard" icon={<LayoutDashboard size={20} />} label="Dashboard" active={location.pathname.includes('/dashboard')} />
-          <NavItem to="/chat" icon={<MessageSquare size={20} />} label="AI Chat" active={location.pathname.includes('/chat')} />
+          <NavItem to="/app" icon={<Upload size={20} />} label="Datasets" active={location.pathname === '/app' || location.pathname === '/app/'} />
+          <NavItem to="/app/dashboard" icon={<LayoutDashboard size={20} />} label="Dashboard" active={location.pathname.includes('/dashboard')} />
+          <NavItem to="/app/chat" icon={<MessageSquare size={20} />} label="AI Chat" active={location.pathname.includes('/chat')} />
         </nav>
-
-        {/* Bottom Icons */}
-        <div className="w-full space-y-4 px-3 mt-auto pb-4">
-          <NavItem to="#" icon={<Bell size={20} />} label="Notifications" active={false} />
-          <NavItem to="#" icon={<Settings size={20} />} label="Settings" active={false} />
-        </div>
       </div>
 
       {/* Main Content Area */}
