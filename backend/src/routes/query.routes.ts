@@ -14,9 +14,13 @@ router.post('/', async (req, res) => {
     }
 
     const db = getDb();
+    const sessionId = req.headers['x-session-id'] || 'anonymous';
 
-    // 1. Fetch dataset metadata
-    const dataset = await db.collection('_datasets').findOne({ _id: new ObjectId(datasetId) });
+    // 1. Fetch dataset metadata and verify ownership
+    const dataset = await db.collection('_datasets').findOne({ 
+      _id: new ObjectId(datasetId),
+      session_id: sessionId
+    });
     if (!dataset) {
       return res.status(404).json({ error: 'Dataset not found.' });
     }

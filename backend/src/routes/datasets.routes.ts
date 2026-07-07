@@ -8,8 +8,9 @@ const router = express.Router();
 router.get('/', async (req, res) => {
   try {
     const db = getDb();
+    const sessionId = req.headers['x-session-id'] || 'anonymous';
     const datasets = await db.collection('_datasets')
-      .find({}, { projection: { column_schema: 0 } }) // Omit schema for list view
+      .find({ session_id: sessionId }, { projection: { column_schema: 0 } }) // Omit schema for list view
       .sort({ created_at: -1 })
       .toArray();
     
@@ -26,7 +27,11 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const db = getDb();
-    const dataset = await db.collection('_datasets').findOne({ _id: new ObjectId(req.params.id) });
+    const sessionId = req.headers['x-session-id'] || 'anonymous';
+    const dataset = await db.collection('_datasets').findOne({ 
+      _id: new ObjectId(req.params.id),
+      session_id: sessionId
+    });
     
     if (!dataset) {
       return res.status(404).json({ error: 'Dataset not found' });
