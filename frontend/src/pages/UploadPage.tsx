@@ -75,9 +75,9 @@ export default function UploadPage() {
       setPreview(null);
       setFile(null);
       setDatasetName('');
-      // Navigate to chat for the new dataset
+      // Navigate to dashboard for the new dataset
       if (res.data.dataset) {
-         navigate(`/chat/${res.data.dataset.id}`);
+         navigate(`/dashboard/${res.data.dataset.id}`);
       }
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to create dataset');
@@ -143,7 +143,7 @@ export default function UploadPage() {
                 datasets.map(ds => (
                   <React.Fragment key={ds.id}>
                     <ListItem disablePadding>
-                      <ListItemButton onClick={() => navigate(`/chat/${ds.id}`)} className="py-3 px-4 hover:bg-blue-50">
+                      <ListItemButton onClick={() => navigate(`/dashboard/${ds.id}`)} className="py-3 px-4 hover:bg-[#ebf5f0]">
                         <ListItemText 
                           primary={<Typography variant="subtitle2" className="font-semibold text-gray-800">{ds.name}</Typography>} 
                           secondary={`${ds.row_count} rows • ${new Date(ds.created_at).toLocaleDateString()}`} 

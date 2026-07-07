@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import uploadRoutes from './routes/upload.routes';
 import queryRoutes from './routes/query.routes';
 import datasetRoutes from './routes/datasets.routes';
+import dashboardRoutes from './routes/dashboard.routes';
 import { initDb } from './services/db.service';
 
 dotenv.config();
@@ -24,6 +25,7 @@ app.get('/api/health', (req, res) => {
 app.use('/api/upload', uploadRoutes);
 app.use('/api/query', queryRoutes);
 app.use('/api/datasets', datasetRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 app.listen(port, () => {
   console.log(`Backend server running on port ${port}`);
