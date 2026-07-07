@@ -1,4 +1,21 @@
 {
+  "redirects": [
+    {
+      "source": "/app/(.*)",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/dashboard/(.*)",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/chat/(.*)",
+      "destination": "/",
+      "permanent": false
+    }
+  ],
   "rewrites": [
     {
       "source": "/(.*)",
