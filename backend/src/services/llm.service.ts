@@ -6,13 +6,9 @@ dotenv.config();
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || '' });
 
 
-
 const modelsToTry = [
-  'gemini-2.5-flash',
-  'gemini-2.5-pro',
-  'gemini-2.0-flash',
-  'gemini-2.0-flash-lite-preview-02-05',
-  'gemini-1.5-flash'
+  'gemini-1.5-flash',
+  'gemini-2.0-flash'
 ];
 
 async function callGeminiJSON(systemInstruction: string, promptContext: string): Promise<string> {

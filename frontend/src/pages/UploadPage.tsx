@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Card, CardContent, Typography, Button, TextField, 
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-  CircularProgress, Alert, List, ListItem, ListItemText, ListItemButton, Divider
+  CircularProgress, Alert, List, ListItem, ListItemText, ListItemButton, Divider,
+  Dialog, DialogTitle, DialogContent, DialogActions
 } from '@mui/material';
 import { Upload as UploadIcon, Database, ArrowRight } from 'lucide-react';
 import axios from 'axios';
@@ -17,6 +18,7 @@ export default function UploadPage() {
   const [error, setError] = useState<string | null>(null);
   const [preview, setPreview] = useState<any | null>(null);
   const [datasets, setDatasets] = useState<any[]>([]);
+  const [successDatasetId, setSuccessDatasetId] = useState<string | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -75,9 +77,9 @@ export default function UploadPage() {
       setPreview(null);
       setFile(null);
       setDatasetName('');
-      // Navigate to dashboard for the new dataset
+      // Show success modal for the new dataset
       if (res.data.dataset) {
-         navigate(`/dashboard/${res.data.dataset.id}`);
+         setSuccessDatasetId(res.data.dataset.id);
       }
     } catch (err: any) {
       setError(err.response?.data?.error || 'Failed to create dataset');
@@ -87,6 +89,7 @@ export default function UploadPage() {
   };
 
   return (
+    <>
     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 h-full flex-grow">
       <div className="md:col-span-1 flex flex-col gap-6 h-full">
         <Card className="shadow-sm border border-gray-200">
@@ -226,5 +229,33 @@ export default function UploadPage() {
         )}
       </div>
     </div>
+
+    {/* Success Modal */}
+    <Dialog open={!!successDatasetId} onClose={() => setSuccessDatasetId(null)} maxWidth="sm" fullWidth>
+      <DialogTitle className="font-bold text-gray-800">Dataset Imported Successfully!</DialogTitle>
+      <DialogContent>
+        <Typography variant="body1" className="text-gray-600 mb-4 mt-2">
+          Your dataset has been imported and is ready for analysis. What would you like to do next?
+        </Typography>
+      </DialogContent>
+      <DialogActions className="p-4 gap-2 flex-col sm:flex-row">
+        <Button 
+          variant="outlined" 
+          onClick={() => navigate(`/chat/${successDatasetId}`)}
+          className="flex-1 py-3"
+          color="primary"
+        >
+          Talk to AI about Data
+        </Button>
+        <Button 
+          variant="contained" 
+          onClick={() => navigate(`/dashboard/${successDatasetId}`)}
+          className="flex-1 py-3 bg-[#10b981] hover:bg-emerald-600 text-white"
+        >
+          Create Full Analysis
+        </Button>
+      </DialogActions>
+    </Dialog>
+    </>
   );
 }
