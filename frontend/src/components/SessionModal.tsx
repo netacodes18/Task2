@@ -67,7 +67,7 @@ export default function SessionModal({ open, onClose }: SessionModalProps) {
               variant="outlined" 
               size="small" 
               fullWidth 
-              inputProps={{ readOnly: true, className: "font-mono text-sm bg-white" }}
+              slotProps={{ htmlInput: { readOnly: true, className: "font-mono text-sm bg-white" } }}
             />
             <Tooltip title={copied ? "Copied!" : "Copy Key"}>
               <IconButton onClick={handleCopy} color={copied ? "success" : "primary"} className="bg-white border border-gray-200 hover:bg-gray-100">

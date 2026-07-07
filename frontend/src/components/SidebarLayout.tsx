@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation, Outlet } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Upload, MessageSquare, LayoutDashboard, BarChart2, UserCircle } from 'lucide-react';
 import SessionModal from './SessionModal';
 
