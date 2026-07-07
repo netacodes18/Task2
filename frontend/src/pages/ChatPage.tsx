@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
-  Card, CardContent, Typography, TextField, Button,
-  CircularProgress, IconButton, Paper, Tabs, Tab, Box, Accordion, AccordionSummary, AccordionDetails
+  Typography, TextField, Button,
+  CircularProgress, Tabs, Tab, Box, Accordion, AccordionSummary, AccordionDetails
 } from '@mui/material';
 import { Send, Table as TableIcon, BarChart2, Code, ChevronDown } from 'lucide-react';
 import DataTable from '../components/DataTable';

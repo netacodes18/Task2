@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { 
   Card, CardContent, Typography, Button, TextField, 
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper,
-  CircularProgress, Alert, List, ListItem, ListItemText, ListItemButton, Divider, Box
+  CircularProgress, Alert, List, ListItem, ListItemText, ListItemButton, Divider
 } from '@mui/material';
 import { Upload as UploadIcon, Database, ArrowRight } from 'lucide-react';
 import axios from 'axios';
@@ -136,9 +136,9 @@ export default function UploadPage() {
             </div>
             <List className="overflow-auto flex-grow">
               {datasets.length === 0 ? (
-                <Box p={4} sx={{ textAlign: 'center' }}>
+                <div className="p-4 text-center">
                   <Typography color="textSecondary" variant="body2">No datasets uploaded yet.</Typography>
-                </Box>
+                </div>
               ) : (
                 datasets.map(ds => (
                   <React.Fragment key={ds.id}>

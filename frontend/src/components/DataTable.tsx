@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TablePagination } from '@mui/material';
 
 interface DataTableProps {
@@ -14,7 +14,7 @@ export default function DataTable({ data, fields }: DataTableProps) {
     return <div className="text-gray-500 italic p-4 text-center">No data returned</div>;
   }
 
-  const handleChangePage = (event: unknown, newPage: number) => {
+  const handleChangePage = (_event: unknown, newPage: number) => {
     setPage(newPage);
   };
 
