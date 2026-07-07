@@ -18,8 +18,7 @@ router.post('/', async (req, res) => {
 
     // 1. Fetch dataset metadata and verify ownership
     const dataset = await db.collection('_datasets').findOne({ 
-      _id: new ObjectId(datasetId),
-      session_id: sessionId
+      _id: new ObjectId(datasetId)
     });
     if (!dataset) {
       return res.status(404).json({ error: 'Dataset not found.' });

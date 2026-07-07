@@ -22,10 +22,9 @@ router.get('/:datasetId', (req, res) => __awaiter(void 0, void 0, void 0, functi
         const { datasetId } = req.params;
         const sessionId = req.headers['x-session-id'] || 'anonymous';
         const db = (0, db_service_1.getDb)();
-        // 1. Fetch dataset metadata
+        // 1. Fetch dataset metadata (Allow access without session ID for sharing links)
         const dataset = yield db.collection('_datasets').findOne({
-            _id: new mongodb_1.ObjectId(datasetId),
-            session_id: sessionId
+            _id: new mongodb_1.ObjectId(datasetId)
         });
         if (!dataset) {
             return res.status(404).json({ error: 'Dataset not found.' });

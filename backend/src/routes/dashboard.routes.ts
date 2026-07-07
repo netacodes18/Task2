@@ -11,10 +11,9 @@ router.get('/:datasetId', async (req, res) => {
     const sessionId = req.headers['x-session-id'] || 'anonymous';
     const db = getDb();
 
-    // 1. Fetch dataset metadata
+    // 1. Fetch dataset metadata (Allow access without session ID for sharing links)
     const dataset = await db.collection('_datasets').findOne({ 
-      _id: new ObjectId(datasetId),
-      session_id: sessionId
+      _id: new ObjectId(datasetId)
     });
 
     if (!dataset) {

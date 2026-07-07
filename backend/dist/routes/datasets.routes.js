@@ -38,10 +38,8 @@ router.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 router.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const db = (0, db_service_1.getDb)();
-        const sessionId = req.headers['x-session-id'] || 'anonymous';
         const dataset = yield db.collection('_datasets').findOne({
-            _id: new mongodb_1.ObjectId(req.params.id),
-            session_id: sessionId
+            _id: new mongodb_1.ObjectId(req.params.id)
         });
         if (!dataset) {
             return res.status(404).json({ error: 'Dataset not found' });

@@ -27,10 +27,8 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     const db = getDb();
-    const sessionId = req.headers['x-session-id'] || 'anonymous';
     const dataset = await db.collection('_datasets').findOne({ 
-      _id: new ObjectId(req.params.id),
-      session_id: sessionId
+      _id: new ObjectId(req.params.id)
     });
     
     if (!dataset) {

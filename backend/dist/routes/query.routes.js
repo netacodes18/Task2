@@ -27,8 +27,7 @@ router.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         const sessionId = req.headers['x-session-id'] || 'anonymous';
         // 1. Fetch dataset metadata and verify ownership
         const dataset = yield db.collection('_datasets').findOne({
-            _id: new mongodb_1.ObjectId(datasetId),
-            session_id: sessionId
+            _id: new mongodb_1.ObjectId(datasetId)
         });
         if (!dataset) {
             return res.status(404).json({ error: 'Dataset not found.' });
